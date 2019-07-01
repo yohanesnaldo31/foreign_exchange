@@ -1,0 +1,23 @@
+.Base{
+    width: 100%;
+    margin: 0;
+    padding: 10px 20px;
+    background-color: #eee;
+    height: 80px;
+    box-sizing: border-box;
+}
+.BaseLabel{
+    text-align: left;
+}
+
+.BaseFlexContainer{
+    margin-top: 5px;
+    width: 100%;
+}
+.BaseCurrency{
+    float: left;
+}
+.BaseValue{
+    float: right;
+    text-align: right;
+}

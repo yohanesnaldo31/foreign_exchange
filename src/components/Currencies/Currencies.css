@@ -1,0 +1,14 @@
+.Currencies{
+    width: 94%;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+}
+
+@media(min-width: 500px){
+    .Currencies{
+        width: 470px;
+        
+    }
+}

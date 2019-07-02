@@ -21,3 +21,10 @@
     float: right;
     text-align: right;
 }
+
+@media (min-width: 500px){
+    .Base{
+        width: 500px;
+        margin: auto;
+    }
+}

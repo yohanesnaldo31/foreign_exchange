@@ -2,101 +2,93 @@ import React, { Component } from 'react';
 import Base from '../components/Base/Base';
 import axios from 'axios';
 import Aux from '../hoc/Auxiliary';
+import Spinner from '../components/UI/Spinner/Spinner';
+import Currencies from '../components/Currencies/Currencies';
 
 class Rates extends Component {
     state = {
         base: {
             id: 'USD',
             name: 'United States Dollar',
-            value: 10000
+            value: 10
         },
-        currency: [
-            {
-                id: 'USD',
+        currency: {
+            USD: {
                 name: 'United States Dollar',
                 visible: true,
-                value: null,
                 rates: null
             },
-            {
-                id: 'CAD',
+            CAD: {
                 name: 'Canada Dollar',
                 visible: false,
-                value: null,
                 rates: null
             },
-            {
-                id: 'IDR',
+            IDR: {
                 name: 'Indonesian Rupiah',
                 visible: true,
-                value: null,
                 rates: null
             },
-            {
-                id: 'EUR',
+            EUR: {
                 name: 'Euro',
                 visible: true,
-                value: null,
                 rates: null
             },
-            {
-                id: 'GBP',
+            GBP: {
                 name: 'British Pound',
                 visible: true,
-                value: null,
                 rates: null
             },
-            {
-                id: 'CHF',
+            CHF: {
                 name: 'Swiss Franc',
                 visible: false,
-                value: null,
                 rates: null
             },
-            {
-                id: 'SGD',
+            SGD: {
                 name: 'Singapore Dollar',
                 visible: true,
-                value: null,
                 rates: null
             },
-            {
-                id: 'INR',
+            INR: {
                 name: 'Indian Rupee',
                 visible: false,
-                value: null,
                 rates: null
             },
-            {
-                id: 'MYR',
+            MYR: {
                 name: 'Malaysian Ringgit',
                 visible: false,
-                value: null,
                 rates: null
             },
-            {
-                id: 'JPY',
+            JPY: {
                 name: 'Japanese Yen',
                 visible: false,
-                value: null,
                 rates: null
             },
-            {
-                id: 'KRW',
+            KRW: {
                 name: 'Korean Won',
                 visible: false,
-                value: null,
                 rates: null
-            },
-        ],
-        rates: null
+            }
+        },
+        hasLoaded: false
     }
 
     componentDidMount(){
-        axios.get('https://api.exchangeratesapi.io/latest?base=USD')
+        axios.get('https://api.exchangeratesapi.io/latest?base='+this.state.base.id)
             .then(response => {
+                const updatedCurrency = {
+                    ...this.state.currency
+                }
+                for(let idKey in updatedCurrency){
+                    // console.log(updatedCurrency);
+                    updatedCurrency[idKey] = {
+                        ...this.state.currency[idKey],
+                        rates: response.data.rates[idKey]
+                    }
+                }
                 console.log(response);
-                this.setState({rates: response.data.rates})
+                this.setState({
+                    currency: updatedCurrency,
+                });
             })
             .catch();
         console.log(this.state);
@@ -107,9 +99,14 @@ class Rates extends Component {
     }
 
     render(){
+        let currencies = <Currencies />
+        if(this.state.hasLoaded===true){
+
+        }
         return(
             <Aux>
                 <Base />
+                {currencies}
                 <button onClick={this.buttonClickedHandler}>click</button>
             </Aux>
             

@@ -3,6 +3,7 @@ import './Currencies.css';
 import Currency from './Currency/Currency';
 
 const currencies = (props) => {
+    // render each currency
     let displayedCurrencies = Object.keys(props.currencies)
         .map(curKey => {
             if(props.currencies[curKey].visible===true){

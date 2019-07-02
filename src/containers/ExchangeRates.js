@@ -117,14 +117,10 @@ class Rates extends Component {
                     hasLoaded: true
                 });
             })
-            .catch();
-        //console.log(this.state);
+            .catch(err => console.log(err));
     }
 
-    buttonClickedHandler = () => {
-        console.log(this.state);
-    }
-
+    //Handling base value input
     inputChangedHandler = (event) => {
         const re = /^[0-9\b]+$/;
         const updatedBase = {
@@ -138,6 +134,7 @@ class Rates extends Component {
         }   
     }
 
+    //handling dropdown when value changed
     dropdownChangedHandler = (event) => {
         const updatedDropdown = {
             ...this.state.dropdown,
@@ -147,6 +144,8 @@ class Rates extends Component {
             dropdown: updatedDropdown
         })
     }
+
+    //handling submit button for dropdown
     currencyAddedHandler = (currencyKey) => {
         const updatedCurrencies = {
             ...this.state.currencies
@@ -163,6 +162,7 @@ class Rates extends Component {
         }
     }
 
+    //handling remove currency button (only hide)
     currencyHidHandler = (currencyKey) => {
         const updatedCurrencies = {
             ...this.state.currencies
@@ -190,7 +190,9 @@ class Rates extends Component {
         return(
             <Aux>
                 <Base 
-                    base = {this.state.base}
+                    id = {this.state.base.id}
+                    name = {this.state.base.name}
+                    value = {this.state.base.value}
                     valueChanged={(event) => this.inputChangedHandler(event)}
                 />
                 {currencies}

@@ -2,7 +2,9 @@ import React from 'react';
 import './Dropdown.css';
 
 const dropdown = (props) => {
+    
     return (
+        
         <div className="Dropdown">
             <div className="DropdownLeft">
                 <select 
@@ -10,6 +12,7 @@ const dropdown = (props) => {
                     value={props.value} 
                     onChange={props.onChange}
                 >
+                    {/* rendering options */}
                     {Object.keys(props.options)
                         .map(id => {
                             return (
@@ -30,4 +33,4 @@ const dropdown = (props) => {
     );
 }
 
-export default dropdown;
+export default React.memo(dropdown);

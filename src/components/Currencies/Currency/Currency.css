@@ -3,7 +3,7 @@
     box-sizing: border-box;
     box-shadow: 0 2px 3px #ccc;
     border: 1px solid #eee;
-    
+    margin-bottom: 10px;
 }
 .Currency{
     display: inline-block;

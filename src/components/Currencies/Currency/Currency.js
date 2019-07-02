@@ -1,4 +1,5 @@
 import React from 'react';
+import NumberFormat from 'react-number-format';
 import './Currency.css';
 
 const currency = (props) => {
@@ -6,21 +7,30 @@ const currency = (props) => {
         <div className="CurrencyBox">
             <div className="Currency"> 
                 <div className="CurrencyID">
-                    USD
+                    {props.id}
                 </div>
                 <div className="CurrencyValue">
-                    10.000
+                    <NumberFormat 
+                        value={(props.value * props.rate).toFixed(4)}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                    />
+                    
                 </div>
                 <div style={{clear: 'both'}}></div>
                 <div className="CurrencyLabel">
-                    <strong>IDR - Indonesian Rupiah</strong>
+                    <strong>{props.id} - {props.name}</strong>
                 </div>
                 <div className="CurrencyRate">
-                    1 USD = IDR 10.000
+                    1 USD = {props.id} <NumberFormat 
+                        value={props.rate.toFixed(4)}
+                        displayType={'text'}
+                        thousandSeparator={true}
+                    />
                 </div>
             </div>
-            {/* <div className="CurrencyButton">( - )</div> */}
-            <button className="CurrencyButton"><strong>( - )</strong></button>
+            
+            <button className="CurrencyButton" onClick={props.hidCurrency}><strong>( - )</strong></button>
         </div>
     );
 }

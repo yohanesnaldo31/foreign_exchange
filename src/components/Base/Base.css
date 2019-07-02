@@ -19,6 +19,9 @@
 }
 .BaseValue{
     float: right;
+    
+}
+.BaseValueInput{
     text-align: right;
 }
 

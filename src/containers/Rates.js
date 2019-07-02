@@ -12,61 +12,61 @@ class Rates extends Component {
             name: 'United States Dollar',
             value: 10
         },
-        currency: {
+        currencies: {
             USD: {
                 name: 'United States Dollar',
-                visible: true,
-                rates: null
+                visible: false,
+                rate: null
             },
             CAD: {
                 name: 'Canada Dollar',
                 visible: false,
-                rates: null
+                rate: null
             },
             IDR: {
                 name: 'Indonesian Rupiah',
                 visible: true,
-                rates: null
+                rate: null
             },
             EUR: {
                 name: 'Euro',
                 visible: true,
-                rates: null
+                rate: null
             },
             GBP: {
                 name: 'British Pound',
                 visible: true,
-                rates: null
+                rate: null
             },
             CHF: {
                 name: 'Swiss Franc',
                 visible: false,
-                rates: null
+                rate: null
             },
             SGD: {
                 name: 'Singapore Dollar',
                 visible: true,
-                rates: null
+                rate: null
             },
             INR: {
                 name: 'Indian Rupee',
                 visible: false,
-                rates: null
+                rate: null
             },
             MYR: {
                 name: 'Malaysian Ringgit',
                 visible: false,
-                rates: null
+                rate: null
             },
             JPY: {
                 name: 'Japanese Yen',
                 visible: false,
-                rates: null
+                rate: null
             },
             KRW: {
                 name: 'Korean Won',
                 visible: false,
-                rates: null
+                rate: null
             }
         },
         hasLoaded: false
@@ -75,19 +75,20 @@ class Rates extends Component {
     componentDidMount(){
         axios.get('https://api.exchangeratesapi.io/latest?base='+this.state.base.id)
             .then(response => {
-                const updatedCurrency = {
-                    ...this.state.currency
+                const updatedCurrencies = {
+                    ...this.state.currencies
                 }
-                for(let idKey in updatedCurrency){
+                for(let idKey in updatedCurrencies){
                     // console.log(updatedCurrency);
-                    updatedCurrency[idKey] = {
-                        ...this.state.currency[idKey],
-                        rates: response.data.rates[idKey]
+                    updatedCurrencies[idKey] = {
+                        ...this.state.currencies[idKey],
+                        rate: response.data.rates[idKey]
                     }
                 }
                 console.log(response);
                 this.setState({
-                    currency: updatedCurrency,
+                    currencies: updatedCurrencies,
+                    hasLoaded: true
                 });
             })
             .catch();
@@ -98,14 +99,49 @@ class Rates extends Component {
         console.log(this.state);
     }
 
-    render(){
-        let currencies = <Currencies />
-        if(this.state.hasLoaded===true){
+    inputChangedHandler = (event) => {
+        const re = /^[0-9\b]+$/;
+        const updatedBase = {
+            ...this.state.base
+        }
+        if(event.target.value==='' || re.test(event.target.value)){
+            updatedBase.value = event.target.value;
+            this.setState({
+                base: updatedBase
+            });
+        }   
+    }
 
+    currencyHidHandler = (currencyKey) => {
+        const updatedCurrencies = {
+            ...this.state.currencies
+        }
+        const updatedCurrency={
+            ...updatedCurrencies[currencyKey],
+            visible: false
+        }
+        updatedCurrencies[currencyKey] = updatedCurrency;
+        this.setState({
+            currencies: updatedCurrencies
+        })
+
+    }
+
+    render(){
+        let currencies = <Spinner />
+        if(this.state.hasLoaded===true){
+            currencies = <Currencies 
+                currencies={this.state.currencies} 
+                value={this.state.base.value}
+                hidCurrency={this.currencyHidHandler}
+                />
         }
         return(
             <Aux>
-                <Base />
+                <Base 
+                    base={this.state.base}
+                    valueChanged={(event) => this.inputChangedHandler(event)}
+                />
                 {currencies}
                 <button onClick={this.buttonClickedHandler}>click</button>
             </Aux>

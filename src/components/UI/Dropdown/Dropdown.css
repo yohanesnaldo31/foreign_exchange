@@ -1,0 +1,47 @@
+.Dropdown{ 
+    width: 94%;
+    margin: auto;
+    height: 30px;
+}
+
+.DropdownLeft{
+    float: left;
+    width: 80%;
+    height: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.DropdownRight{
+    float: right;
+    width: 20%;
+    height: 100%;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.DropdownInput{
+    width: 100%;
+    height: 100%;
+    font-size: 18px;
+}
+.DropdownButton{
+    width: 100%;
+    height: 100%;
+    background-color: #2e86de;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.DropdownButton:hover{
+    background-color: #74b9ff;
+}
+
+@media(min-width: 500px){
+    .Dropdown{
+        width: 470px;
+        
+    }
+}
+

@@ -20,10 +20,16 @@
     margin: 0;
     padding: 0;
     outline: none;
+    cursor: pointer;
+    border: 1px solid #ccc;
     background-color: #ff3838;
     box-sizing: border-box;
     float: right;
 }
+.CurrencyButton:hover{
+    background-color: #ff6b6b;
+}
+
 .CurrencyID{
     float: left;
 }
@@ -41,3 +47,4 @@
     text-align: left;
     margin-top: 5px;
 }
+

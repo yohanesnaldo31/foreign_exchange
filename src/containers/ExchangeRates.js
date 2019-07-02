@@ -4,6 +4,7 @@ import axios from 'axios';
 import Aux from '../hoc/Auxiliary';
 import Spinner from '../components/UI/Spinner/Spinner';
 import Currencies from '../components/Currencies/Currencies';
+import Dropdown from '../components/UI/Dropdown/Dropdown';
 
 class Rates extends Component {
     state = {
@@ -69,10 +70,35 @@ class Rates extends Component {
                 rate: null
             }
         },
-        hasLoaded: false
+        hasLoaded: false,
+        dropdown: {
+            value: '',
+            options: [
+                {value: '', displayedValue: '( + ) Add More Currencies'}
+            ]
+        }
+
     }
 
     componentDidMount(){
+        // Dynamically add more dropdown options 
+        const addedOptions = [...this.state.dropdown.options];
+        Object.keys(this.state.currencies)
+            .map(curKey => {
+                addedOptions.push({
+                    value: curKey,
+                    displayedValue: curKey
+                })
+            })
+        const updatedDropdown = {
+            ...this.state.dropdown,
+            options: addedOptions
+        }
+        this.setState({
+            dropdown: updatedDropdown
+        })
+
+        // Update exchange rate from API
         axios.get('https://api.exchangeratesapi.io/latest?base='+this.state.base.id)
             .then(response => {
                 const updatedCurrencies = {
@@ -85,14 +111,14 @@ class Rates extends Component {
                         rate: response.data.rates[idKey]
                     }
                 }
-                console.log(response);
+                //console.log(response);
                 this.setState({
                     currencies: updatedCurrencies,
                     hasLoaded: true
                 });
             })
             .catch();
-        console.log(this.state);
+        //console.log(this.state);
     }
 
     buttonClickedHandler = () => {
@@ -104,7 +130,7 @@ class Rates extends Component {
         const updatedBase = {
             ...this.state.base
         }
-        if(event.target.value==='' || re.test(event.target.value)){
+        if(event.target.value ==='' || re.test(event.target.value)){
             updatedBase.value = event.target.value;
             this.setState({
                 base: updatedBase
@@ -112,11 +138,36 @@ class Rates extends Component {
         }   
     }
 
+    dropdownChangedHandler = (event) => {
+        const updatedDropdown = {
+            ...this.state.dropdown,
+            value: event.target.value
+        }
+        this.setState({
+            dropdown: updatedDropdown
+        })
+    }
+    currencyAddedHandler = (currencyKey) => {
+        const updatedCurrencies = {
+            ...this.state.currencies
+        }
+        if(updatedCurrencies[currencyKey]){
+            const updatedCurrency = {
+                ...updatedCurrencies[currencyKey],
+                visible: true
+            }
+            updatedCurrencies[currencyKey] = updatedCurrency;
+            this.setState({
+                currencies: updatedCurrencies
+            })
+        }
+    }
+
     currencyHidHandler = (currencyKey) => {
         const updatedCurrencies = {
             ...this.state.currencies
         }
-        const updatedCurrency={
+        const updatedCurrency = {
             ...updatedCurrencies[currencyKey],
             visible: false
         }
@@ -129,21 +180,26 @@ class Rates extends Component {
 
     render(){
         let currencies = <Spinner />
-        if(this.state.hasLoaded===true){
+        if(this.state.hasLoaded === true){
             currencies = <Currencies 
-                currencies={this.state.currencies} 
-                value={this.state.base.value}
-                hidCurrency={this.currencyHidHandler}
+                currencies = {this.state.currencies} 
+                value = {this.state.base.value}
+                hidCurrency = {this.currencyHidHandler}
                 />
         }
         return(
             <Aux>
                 <Base 
-                    base={this.state.base}
+                    base = {this.state.base}
                     valueChanged={(event) => this.inputChangedHandler(event)}
                 />
                 {currencies}
-                <button onClick={this.buttonClickedHandler}>click</button>
+                <Dropdown
+                    options={this.state.dropdown.options} 
+                    value={this.state.dropdown.value}
+                    onChange={(event) => this.dropdownChangedHandler(event)}
+                    onClickBtn={() => this.currencyAddedHandler(this.state.dropdown.value)}/>
+                
             </Aux>
             
         );

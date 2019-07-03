@@ -122,11 +122,10 @@ class Rates extends Component {
 
     //Handling base value input
     inputChangedHandler = (event) => {
-        const re = /^[0-9\b]+$/;
         const updatedBase = {
             ...this.state.base
         }
-        if(event.target.value ==='' || re.test(event.target.value)){
+        if(event.target.value ==='' || event.target.validity.valid){
             updatedBase.value = event.target.value;
             this.setState({
                 base: updatedBase

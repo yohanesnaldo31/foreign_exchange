@@ -11,7 +11,8 @@ const base = (props) => {
                 <div className="BaseValue">
                     <input 
                         className="BaseValueInput" 
-                        type="text" pattern="[0-9]" 
+                        inputMode="numeric"
+                        type="text" pattern="[0-9.]*" 
                         value={props.value}
                         onChange={props.valueChanged}/>
                 </div>
